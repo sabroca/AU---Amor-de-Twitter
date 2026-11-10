@@ -291,12 +291,31 @@ function renderChapters() {
 
 
 
+
 function scrollToChapterStart() {
-  $("#chapterReader").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+  requestAnimationFrame(() => {
+      const chapterReader = $("#chapterReader");
+      const topbar = document.querySelector(".topbar");
+
+      if (!chapterReader) return;
+
+      const headerHeight = topbar
+          ? topbar.offsetHeight
+          : 0;
+
+      const position =
+          chapterReader.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight -
+          12;
+
+      window.scrollTo({
+          top: Math.max(0, position),
+          behavior: "smooth"
+      });
   });
 }
+
 
 $("#previousChapter").addEventListener("click", () => {
   if (selectedChapter > 0) {
